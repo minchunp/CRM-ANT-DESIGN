@@ -7,8 +7,9 @@ import viVN from "antd/lib/locale/vi_VN";
 import App from "./App.tsx";
 import { AppProvider } from "./context/AppContext.tsx";
 import { ThemeProvider, useTheme } from "./context/ThemeContext.tsx";
-import "./index.css";
 import { GlobalMessageProvider } from "./context/MessageContext.tsx";
+import "./styles/index.css";
+import "./styles/theme.css";
 
 export const queryClient = new QueryClient({
    defaultOptions: {

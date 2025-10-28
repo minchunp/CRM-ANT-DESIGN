@@ -35,13 +35,4 @@ export const handlers = [
          );
       }
    }),
-
-   http.post("api/logout", () => {
-      return Response.json(
-         { message: "Logged out successfully" },
-         {
-            status: 200,
-         }
-      );
-   }),
 ];

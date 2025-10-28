@@ -1,12 +1,12 @@
 import { Button, Form, Input, type FormProps } from "antd";
 import { useNavigate } from "react-router-dom";
-import { useAppContext } from "../../context/AppContext";
+import { useAppContext } from "../../../context/AppContext";
 import { useMutation } from "@tanstack/react-query";
-import { authService } from "../../services/auth/auth.service";
-import { setProfileFromLS } from "../../utils/localStorage";
+import { authService } from "../../../services/auth/auth.service";
+import { setProfileFromLS } from "../../../utils/localStorage";
 import { useEffect, useState } from "react";
 import "./styles/auth.style.css";
-import { useGlobalMessage } from "../../context/MessageContext";
+import { useGlobalMessage } from "../../../context/MessageContext";
 
 type FieldType = {
    email: string;
@@ -31,7 +31,7 @@ const LoginPage = () => {
             setProfileFromLS(data.data.user);
          }
          setIsAuthenticated(true);
-         navigate("/");
+         navigate("/dashboard");
       },
       onError: (error) => {
          message.error("Login failed. Please check your credentials.");
