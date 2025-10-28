@@ -1,4 +1,4 @@
-import type { LoginRequest, LoginResponse } from "../../interfaces/user.interface";
+import type { LoginRequest, LoginResponse } from "../../interfaces/auth.interface";
 import axiosInstanceMain from "../axios";
 
 export const authService = {

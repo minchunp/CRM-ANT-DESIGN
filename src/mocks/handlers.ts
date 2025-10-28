@@ -1,25 +1,7 @@
 import { http } from "msw";
-import type { LoginRequest, User } from "../interfaces/user.interface";
 import _ from "lodash";
-
-const mockUsers: User[] = [
-   {
-      _id: "1",
-      name: "Suee",
-      email: "suee@example.com",
-      password: "sue0604#",
-      createdAt: new Date("2023-01-01"),
-      updatedAt: new Date("2023-01-01"),
-   },
-   {
-      _id: "2",
-      name: "Test User",
-      email: "user@example.com",
-      password: "user123",
-      createdAt: new Date("2023-02-01"),
-      updatedAt: new Date("2023-02-01"),
-   },
-];
+import { mockUsers } from "./data/mockUsers.data";
+import type { LoginRequest } from "../interfaces/auth.interface";
 
 export const handlers = [
    http.post("api/login", async ({ request }) => {
