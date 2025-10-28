@@ -1,11 +1,14 @@
+/* eslint-disable react-refresh/only-export-components */
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ConfigProvider } from "antd";
+import { ConfigProvider, theme, App as AntApp } from "antd";
 import viVN from "antd/lib/locale/vi_VN";
 import App from "./App.tsx";
-import "./index.css";
 import { AppProvider } from "./context/AppContext.tsx";
+import { ThemeProvider, useTheme } from "./context/ThemeContext.tsx";
+import "./index.css";
+import { GlobalMessageProvider } from "./context/MessageContext.tsx";
 
 export const queryClient = new QueryClient({
    defaultOptions: {
@@ -15,6 +18,23 @@ export const queryClient = new QueryClient({
       },
    },
 });
+
+const AppWithTheme = () => {
+   const { theme: currentTheme } = useTheme();
+
+   return (
+      <ConfigProvider
+         locale={viVN}
+         theme={{
+            algorithm: currentTheme === "dark" ? theme.darkAlgorithm : theme.defaultAlgorithm,
+         }}
+      >
+         <AntApp>
+            <App />
+         </AntApp>
+      </ConfigProvider>
+   );
+};
 
 const prepare = async () => {
    if (import.meta.env.DEV) {
@@ -29,9 +49,11 @@ prepare().then(() => {
       <BrowserRouter>
          <QueryClientProvider client={queryClient}>
             <AppProvider>
-               <ConfigProvider locale={viVN}>
-                  <App />
-               </ConfigProvider>
+               <ThemeProvider>
+                  <GlobalMessageProvider>
+                     <AppWithTheme />
+                  </GlobalMessageProvider>
+               </ThemeProvider>
             </AppProvider>
          </QueryClientProvider>
       </BrowserRouter>

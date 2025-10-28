@@ -4,7 +4,7 @@ export const mockUsers: User[] = [
    {
       _id: "1",
       name: "Suee",
-      email: "suee@example.com",
+      email: "suee@gmail.com",
       password: "sue0604#",
       createdAt: new Date("2023-01-01"),
       updatedAt: new Date("2023-01-01"),
