@@ -102,7 +102,6 @@ const MainLayout = ({ children }: MainLayoutProps) => {
             ></div>
          </div>
 
-         {/* Sidebar - Fixed */}
          <Sider
             breakpoint="lg"
             width={280}
@@ -124,7 +123,6 @@ const MainLayout = ({ children }: MainLayoutProps) => {
             collapsed={collapsed}
          >
             <div className="h-full flex flex-col">
-               {/* Logo Section */}
                <div
                   className="h-16 flex items-center px-6 gap-3 border-b transition-all duration-300 ease-out shrink-0"
                   style={{ borderColor: "var(--border-primary)" }}
@@ -152,9 +150,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
                   )}
                </div>
 
-               {/* Scrollable Content */}
                <div className="flex-1 overflow-y-auto overflow-x-hidden" style={{ scrollbarWidth: "thin" }}>
-                  {/* Quick Stats Card */}
                   {!collapsed && (
                      <div className="px-4 pt-5 pb-3 opacity-0 animate-fadeIn" style={{ animationDelay: "150ms", animationFillMode: "forwards" }}>
                         <div
@@ -175,7 +171,6 @@ const MainLayout = ({ children }: MainLayoutProps) => {
                      </div>
                   )}
 
-                  {/* Menu */}
                   <div className="px-3 pt-2">
                      <Menu
                         className="border-none"
@@ -189,7 +184,6 @@ const MainLayout = ({ children }: MainLayoutProps) => {
                      />
                   </div>
 
-                  {/* Premium Card */}
                   {!collapsed && (
                      <div className="px-3 pb-4 mt-4 opacity-0 animate-fadeIn" style={{ animationDelay: "200ms", animationFillMode: "forwards" }}>
                         <div
@@ -238,7 +232,6 @@ const MainLayout = ({ children }: MainLayoutProps) => {
                flexDirection: "column",
             }}
          >
-            {/* Header - Fixed */}
             <Header
                className="border-b px-6 flex items-center justify-between h-16 transition-all duration-300 shrink-0"
                style={{
@@ -264,7 +257,6 @@ const MainLayout = ({ children }: MainLayoutProps) => {
                      <TextAlignJustify className="h-5 w-5" />
                   </Button>
 
-                  {/* Breadcrumb */}
                   <div className="hidden md:flex items-center gap-2 text-sm">
                      <span className="font-medium" style={{ color: "var(--text-secondary)" }}>
                         Dashboard
@@ -277,7 +269,6 @@ const MainLayout = ({ children }: MainLayoutProps) => {
                </div>
 
                <div className="flex items-center gap-3">
-                  {/* Search Bar */}
                   <button
                      className="hidden md:flex items-center gap-3 border rounded-xl px-4 h-9 transition-all duration-200 group active:scale-[0.98]"
                      style={{
@@ -304,7 +295,6 @@ const MainLayout = ({ children }: MainLayoutProps) => {
 
                   <ThemeToggle />
 
-                  {/* User Dropdown */}
                   <Dropdown menu={{ items: userMenuItems }} trigger={["click"]} placement="bottomRight">
                      <div
                         className="flex items-center gap-2.5 py-1.5 px-2.5 rounded-xl cursor-pointer transition-all duration-200 group active:scale-[0.98]"
@@ -336,7 +326,6 @@ const MainLayout = ({ children }: MainLayoutProps) => {
                </div>
             </Header>
 
-            {/* Main Content - Scrollable */}
             <Content className="p-5 relative flex-1 overflow-y-auto">
                <div
                   className="rounded-3xl border p-8 min-h-full relative overflow-hidden transition-all duration-300"
