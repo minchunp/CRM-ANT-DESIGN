@@ -2,7 +2,7 @@ import { Button, Layout, Menu, Avatar, Dropdown, type MenuProps } from "antd";
 import { useState, useMemo } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { pathRoute } from "../../constants/path";
-import { LayoutDashboard, Search, Settings, LogOut, User, ChevronRight, Sparkles, TextAlignJustify, ListTodo } from "lucide-react";
+import { LayoutDashboard, Search, Settings, LogOut, User, ChevronRight, Sparkles, TextAlignJustify, ListTodo, CalendarRange } from "lucide-react";
 import logo from "../../assets/vite.svg";
 import { useAppContext } from "../../context/AppContext";
 import { clearLS } from "../../utils/localStorage";
@@ -42,6 +42,12 @@ const MainLayout = ({ children }: MainLayoutProps) => {
             path: pathRoute.todolist,
             label: <Link to={pathRoute.todolist}>To-Do List</Link>,
             icon: <ListTodo size={18} />,
+         },
+         {
+            key: "calendar",
+            path: pathRoute.calendar,
+            label: <Link to={pathRoute.calendar}>Calendar</Link>,
+            icon: <CalendarRange size={18} />,
          },
       ],
       []
@@ -85,7 +91,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
    ];
 
    return (
-      <Layout className="min-h-screen" style={{ background: "var(--bg-primary)" }}>
+      <Layout className="h-screen overflow-hidden" style={{ background: "var(--bg-primary)" }}>
          <div className="fixed inset-0 overflow-hidden pointer-events-none" style={{ opacity: "var(--mesh-opacity)" }}>
             <div
                className="absolute inset-0"
@@ -96,134 +102,153 @@ const MainLayout = ({ children }: MainLayoutProps) => {
             ></div>
          </div>
 
-         {/* Sidebar */}
+         {/* Sidebar - Fixed */}
          <Sider
             breakpoint="lg"
             width={280}
             collapsedWidth={80}
-            className="border-r relative z-10 transition-all duration-300 ease-in-out"
+            className="border-r relative z-10 transition-all duration-300 ease-in-out overflow-hidden"
             style={{
                background: "var(--bg-sidebar)",
                backdropFilter: "blur(40px)",
                borderColor: "var(--border-primary)",
                boxShadow: "var(--shadow-sm)",
                willChange: "width",
+               height: "100vh",
+               position: "fixed",
+               left: 0,
+               top: 0,
             }}
             trigger={null}
             collapsible
             collapsed={collapsed}
          >
-            {/* Logo Section */}
-            <div
-               className="h-16 flex items-center px-6 gap-3 border-b transition-all duration-300 ease-out"
-               style={{ borderColor: "var(--border-primary)" }}
-            >
-               <div className="relative transition-all duration-300 ease-out" style={{ willChange: "transform" }}>
-                  {!collapsed ? (
-                     <div className="relative w-10 h-10 bg-linear-to-br from-blue-600 to-blue-700 rounded-[10px] flex items-center justify-center shadow-sm transition-all duration-300 hover:shadow-md hover:scale-105">
-                        <img src={logo} alt="Logo" className="w-6 h-6 brightness-0 invert transition-transform duration-300" />
-                     </div>
-                  ) : (
-                     <div className="relative w-9 h-9 bg-linear-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center shadow-sm transition-all duration-300 hover:shadow-md hover:scale-105">
-                        <img src={logo} alt="Logo" className="w-5 h-5 brightness-0 invert" />
+            <div className="h-full flex flex-col">
+               {/* Logo Section */}
+               <div
+                  className="h-16 flex items-center px-6 gap-3 border-b transition-all duration-300 ease-out shrink-0"
+                  style={{ borderColor: "var(--border-primary)" }}
+               >
+                  <div className="relative transition-all duration-300 ease-out" style={{ willChange: "transform" }}>
+                     {!collapsed ? (
+                        <div className="relative w-10 h-10 bg-linear-to-br from-blue-600 to-blue-700 rounded-[10px] flex items-center justify-center shadow-sm transition-all duration-300 hover:shadow-md hover:scale-105">
+                           <img src={logo} alt="Logo" className="w-6 h-6 brightness-0 invert transition-transform duration-300" />
+                        </div>
+                     ) : (
+                        <div className="relative w-9 h-9 bg-linear-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center shadow-sm transition-all duration-300 hover:shadow-md hover:scale-105">
+                           <img src={logo} alt="Logo" className="w-5 h-5 brightness-0 invert" />
+                        </div>
+                     )}
+                  </div>
+                  {!collapsed && (
+                     <div className="flex flex-col opacity-0 animate-fadeIn" style={{ animationDelay: "100ms", animationFillMode: "forwards" }}>
+                        <span className="text-base font-semibold tracking-tight" style={{ color: "var(--text-primary)" }}>
+                           CRM To-Do List
+                        </span>
+                        <span className="text-xs font-medium" style={{ color: "var(--text-tertiary)" }}>
+                           Dashboard v2.0
+                        </span>
                      </div>
                   )}
                </div>
-               {!collapsed && (
-                  <div className="flex flex-col opacity-0 animate-fadeIn" style={{ animationDelay: "100ms", animationFillMode: "forwards" }}>
-                     <span className="text-base font-semibold tracking-tight" style={{ color: "var(--text-primary)" }}>
-                        CRM To-Do List
-                     </span>
-                     <span className="text-xs font-medium" style={{ color: "var(--text-tertiary)" }}>
-                        Dashboard v2.0
-                     </span>
-                  </div>
-               )}
-            </div>
 
-            {/* Quick Stats Card */}
-            {!collapsed && (
-               <div className="px-4 pt-5 pb-3 opacity-0 animate-fadeIn" style={{ animationDelay: "150ms", animationFillMode: "forwards" }}>
-                  <div
-                     className="bg-linear-to-br from-blue-500 to-blue-600 rounded-2xl p-5 text-white relative overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.02] cursor-pointer group"
-                     style={{ willChange: "transform" }}
-                  >
-                     <div className="absolute inset-0 bg-linear-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                     <div className="absolute -top-8 -right-8 w-32 h-32 bg-white/5 rounded-full"></div>
-                     <div className="relative">
-                        <div className="flex items-center gap-2 mb-3">
-                           <Sparkles size={14} className="opacity-90" />
-                           <span className="text-xs font-medium opacity-90 tracking-wide">OVERVIEW</span>
+               {/* Scrollable Content */}
+               <div className="flex-1 overflow-y-auto overflow-x-hidden" style={{ scrollbarWidth: "thin" }}>
+                  {/* Quick Stats Card */}
+                  {!collapsed && (
+                     <div className="px-4 pt-5 pb-3 opacity-0 animate-fadeIn" style={{ animationDelay: "150ms", animationFillMode: "forwards" }}>
+                        <div
+                           className="bg-linear-to-br from-blue-500 to-blue-600 rounded-2xl p-5 text-white relative overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.02] cursor-pointer group"
+                           style={{ willChange: "transform" }}
+                        >
+                           <div className="absolute inset-0 bg-linear-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                           <div className="absolute -top-8 -right-8 w-32 h-32 bg-white/5 rounded-full"></div>
+                           <div className="relative">
+                              <div className="flex items-center gap-2 mb-3">
+                                 <Sparkles size={14} className="opacity-90" />
+                                 <span className="text-xs font-medium opacity-90 tracking-wide">OVERVIEW</span>
+                              </div>
+                              <div className="text-3xl font-semibold mb-1 tracking-tight">24</div>
+                              <div className="text-xs opacity-80 font-medium">8 pending · 16 completed</div>
+                           </div>
                         </div>
-                        <div className="text-3xl font-semibold mb-1 tracking-tight">24</div>
-                        <div className="text-xs opacity-80 font-medium">8 pending · 16 completed</div>
                      </div>
+                  )}
+
+                  {/* Menu */}
+                  <div className="px-3 pt-2">
+                     <Menu
+                        className="border-none"
+                        style={{
+                           background: "transparent",
+                           transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                        }}
+                        mode="inline"
+                        selectedKeys={[selectedKey]}
+                        items={items}
+                     />
                   </div>
-               </div>
-            )}
 
-            {/* Menu */}
-            <div className="px-3 pt-2">
-               <Menu
-                  className="border-none"
-                  style={{
-                     background: "transparent",
-                     transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                  }}
-                  mode="inline"
-                  selectedKeys={[selectedKey]}
-                  items={items}
-               />
-            </div>
-
-            {/* Premium Card */}
-            {!collapsed && (
-               <div
-                  className="absolute bottom-4 left-3 right-3 opacity-0 animate-fadeIn"
-                  style={{ animationDelay: "200ms", animationFillMode: "forwards" }}
-               >
-                  <div
-                     className="rounded-2xl p-4 relative overflow-hidden transition-all duration-300 hover:shadow-md hover:scale-[1.01] group border"
-                     style={{
-                        background: "var(--bg-card)",
-                        backdropFilter: "blur(20px)",
-                        borderColor: "var(--border-primary)",
-                        willChange: "transform",
-                     }}
-                  >
-                     <div className="absolute top-0 right-0 text-5xl opacity-5 select-none">✨</div>
-                     <div className="relative">
-                        <div className="text-sm font-semibold mb-1 tracking-tight" style={{ color: "var(--text-primary)" }}>
-                           Upgrade to Pro
-                        </div>
-                        <p className="text-xs mb-3 leading-relaxed" style={{ color: "var(--text-secondary)" }}>
-                           Unlock premium features and unlimited access
-                        </p>
-                        <button
-                           className="w-full text-white text-xs font-semibold py-2.5 rounded-xl transition-all duration-200 hover:shadow-md active:scale-[0.98]"
+                  {/* Premium Card */}
+                  {!collapsed && (
+                     <div className="px-3 pb-4 mt-4 opacity-0 animate-fadeIn" style={{ animationDelay: "200ms", animationFillMode: "forwards" }}>
+                        <div
+                           className="rounded-2xl p-4 relative overflow-hidden transition-all duration-300 hover:shadow-md hover:scale-[1.01] group border"
                            style={{
-                              color: "var(--bg-primary)",
-                              background: "var(--text-primary)",
+                              background: "var(--bg-card)",
+                              backdropFilter: "blur(20px)",
+                              borderColor: "var(--border-primary)",
                               willChange: "transform",
                            }}
                         >
-                           Upgrade Now
-                        </button>
+                           <div className="absolute top-0 right-0 text-5xl opacity-5 select-none">✨</div>
+                           <div className="relative">
+                              <div className="text-sm font-semibold mb-1 tracking-tight" style={{ color: "var(--text-primary)" }}>
+                                 Upgrade to Pro
+                              </div>
+                              <p className="text-xs mb-3 leading-relaxed" style={{ color: "var(--text-secondary)" }}>
+                                 Unlock premium features and unlimited access
+                              </p>
+                              <button
+                                 className="w-full text-white text-xs font-semibold py-2.5 rounded-xl transition-all duration-200 hover:shadow-md active:scale-[0.98]"
+                                 style={{
+                                    color: "var(--bg-primary)",
+                                    background: "var(--text-primary)",
+                                    willChange: "transform",
+                                 }}
+                              >
+                                 Upgrade Now
+                              </button>
+                           </div>
+                        </div>
                      </div>
-                  </div>
+                  )}
                </div>
-            )}
+            </div>
          </Sider>
 
-         <Layout className="relative z-0" style={{ background: "transparent" }}>
-            {/* Header */}
+         <Layout
+            className="relative z-0"
+            style={{
+               background: "transparent",
+               marginLeft: collapsed ? 80 : 280,
+               transition: "margin-left 0.3s ease-in-out",
+               height: "100vh",
+               display: "flex",
+               flexDirection: "column",
+            }}
+         >
+            {/* Header - Fixed */}
             <Header
-               className="border-b px-6 flex items-center justify-between h-16 transition-all duration-300"
+               className="border-b px-6 flex items-center justify-between h-16 transition-all duration-300 shrink-0"
                style={{
                   background: "var(--bg-header)",
                   backdropFilter: "blur(40px)",
                   borderColor: "var(--border-primary)",
                   boxShadow: "var(--shadow-sm)",
+                  position: "sticky",
+                  top: 0,
+                  zIndex: 10,
                }}
             >
                <div className="flex items-center gap-4">
@@ -311,10 +336,10 @@ const MainLayout = ({ children }: MainLayoutProps) => {
                </div>
             </Header>
 
-            {/* Main Content */}
-            <Content className="p-5 relative">
+            {/* Main Content - Scrollable */}
+            <Content className="p-5 relative flex-1 overflow-y-auto">
                <div
-                  className="rounded-3xl border p-8 min-h-[calc(100vh-100px)] relative overflow-hidden transition-all duration-300"
+                  className="rounded-3xl border p-8 min-h-full relative overflow-hidden transition-all duration-300"
                   style={{
                      background: "var(--bg-card)",
                      backdropFilter: "blur(40px)",

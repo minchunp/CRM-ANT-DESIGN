@@ -1,11 +1,12 @@
 import { Navigate, Outlet, useRoutes } from "react-router-dom";
 import { useAppContext } from "./context/AppContext";
-import LoginPage from "./pages/auth/login/login";
+import LoginPage from "./pages/auth/login";
 import { pathAuth, pathRoute } from "./constants/path";
 import MainLayout from "./layouts/main/main-layout";
 import DashboardPage from "./pages/dashboard";
 import TodolistPage from "./pages/todo";
 import NotFoundPage from "./pages/errors/not-found";
+import CalendarPage from "./pages/calendar";
 
 const useRouterElements = () => {
    const ProtectedRoute = () => {
@@ -36,6 +37,14 @@ const useRouterElements = () => {
                element: (
                   <MainLayout>
                      <TodolistPage />
+                  </MainLayout>
+               ),
+            },
+            {
+               path: pathRoute.calendar,
+               element: (
+                  <MainLayout>
+                     <CalendarPage />
                   </MainLayout>
                ),
             },
