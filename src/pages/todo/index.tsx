@@ -4,7 +4,7 @@ const TodolistPage = () => {
    return (
       <Fragment>
          <div>
-            <h1>To-Do List</h1>
+            <h1 className="text-2xl font-bold">To-Do List</h1>
          </div>
       </Fragment>
    );
