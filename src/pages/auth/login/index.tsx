@@ -5,8 +5,9 @@ import { useMutation } from "@tanstack/react-query";
 import { authService } from "../../../services/auth/auth.service";
 import { setProfileFromLS } from "../../../utils/localStorage";
 import { useEffect, useState } from "react";
-import "./styles/auth.style.css";
 import { useGlobalMessage } from "../../../context/MessageContext";
+
+import "./styles/auth.style.css";
 
 type FieldType = {
    email: string;
